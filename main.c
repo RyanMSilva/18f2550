@@ -48,21 +48,21 @@ void main(void) {
 	
 	Delay1KTCYx(4);
 	
-	while(1) 
-     {
-		/*LATAbits.LATA4 = 1;
+	while(1){
+// Setup to make a LED blink on pin RA4:
+		LATAbits.LATA4 = 1;
 		Delay10KTCYx(1000);
 		LATAbits.LATA4 = 0;
 		Delay10KTCYx(1000);
-		
+	
+// Initializing the ADC:
 		ConvertADC();
-		
+	
+// Reading ADC:
 		ADCres = (unsigned int) ReadADC();
-
-		sprintf(res, "A1=%d\r\n", ADCres);
-		
-		putsUSART(res);*/
-
+		CloseADC();
+	
+// Initializing USART:
 		OpenUSART(USART_TX_INT_OFF & 
         	USART_RX_INT_OFF & 
         	USART_ASYNCH_MODE & 
@@ -71,17 +71,13 @@ void main(void) {
         	USART_BRGH_LOW,
 			77);
 		
-		//while(!DataRdyUSART());
-		//getsUSART(message, 5);
-		for(i=1; i<=6; i++){
-			while(!DataRdyUSART());
-			temp = getcUSART();
-			message[i] = temp;
-		}
-		sprintf(res, "%s\r\n", message);
+// Formating the string to be transmited:
+		sprintf(res, "A1=%d\r\n", ADCres);
+	
+// Transmiting string:
 		putsUSART(res);
-
 		Delay1KTCYx(4);
+
 		CloseUSART();
-     }
+     	}
 }
